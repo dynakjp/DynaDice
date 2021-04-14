@@ -2,7 +2,8 @@ import discord
 import os
 import random
 
-token = os.environ['DISCORD_BOT_TOKEN']
+# 自分のBotのアクセストークンに置き換えてください
+TOKEN = os.environ['DISCORD_BOT_TOKEN']
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
 # 起動時に動作する処理
