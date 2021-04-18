@@ -66,7 +66,7 @@ async def on_message(message):
             x=x+1
         return m
 
-    def Skill(num,bp):
+    def Skill(ver,num,bp):
         num=int(num)
         bp=int(bp)
         random.seed()
@@ -75,6 +75,7 @@ async def on_message(message):
         rum2=int(random.random()*10)
         dc=[100-(rum1*10+rum2)]
         rum=100-(rum1*10+rum2)
+
         while len(dc)<=abs(int(bp)):
             random.seed()
             rum1=int(random.random()*10)
@@ -86,14 +87,55 @@ async def on_message(message):
                 if 100-(rum1*10+rum2)>=rum:
                     rum=100-(rum1*10+rum2)
 
-        if 96<=rum:
-            txt="× ファンブル ×"
-        elif rum<=5:
-            txt="☆ クリティカル ☆"
-        elif rum<=num:
-            txt="○ 成功 ○"
-        elif rum<=95:
-            txt="△ 失敗 △"
+        if ver=="7":
+            if num>=50:
+                if 100==rum:
+                    txt="(7)× ファンブル ×"
+                elif rum==1:
+                    txt="(7)☆ クリティカル ☆"
+                elif rum<=num/5:
+                    txt="(7)☆　エキスパート　☆"
+                elif rum<=num/2:
+                    txt="(7)○　ハード　○"
+                elif rum<=num:
+                    txt="(7)○ 成功 ○"
+                elif rum>num:
+                    txt="(7)△ 失敗 △"
+            else:
+                if 96<=rum:
+                    txt="(7)× ファンブル ×"
+                elif rum==1:
+                    txt="(7)☆ クリティカル ☆"
+                elif rum<=num/5:
+                    txt="(7)☆　エキスパート　☆"
+                elif rum<=num/2:
+                    txt="(7)○　ハード　○"
+                elif rum<=num:
+                    txt="(7)○ 成功 ○"
+                elif rum>num:
+                    txt="(7)△ 失敗 △"
+        elif ver=="6":
+            if 96<=rum:
+                txt="(6)× ファンブル ×"
+            elif rum<=5:
+                txt="(6)☆ クリティカル ☆"
+            elif rum<=num:
+                txt="(6)○ 成功 ○"
+            elif rum>num:
+                txt="(6)△ 失敗 △"
+        else:
+            if 96<=rum:
+                txt="× ファンブル ×"
+            elif rum<=5:
+                txt="☆ クリティカル ☆"
+            elif rum<=num/5:
+                txt="☆　エキスパート　☆"
+            elif rum<=num/2:
+                txt="○　ハード　○"
+            elif rum<=num:
+                txt="○ 成功 ○"
+            elif rum>num:
+                txt="△ 失敗 △"
         
         txt=txt+" ("+str(num)+"=>"+str(rum)+str(dc)+")"
         return txt
@@ -224,9 +266,9 @@ async def on_message(message):
     elif message.content.startswith('!sk'):
         send_message=message.content.split(" ")
         if len(send_message)>=3 and is_num(send_message[2])==True:
-            await message.channel.send(message.author.mention+Skill(send_message[1],send_message[2]))
+            await message.channel.send(message.author.mention+Skill(send_message[0].replace("!sk",""),send_message[1],send_message[2]))
         else:
-            await message.channel.send(message.author.mention+Skill(send_message[1],0))
+            await message.channel.send(message.author.mention+Skill(send_message[0].replace("!sk",""),send_message[1],0))
     
     elif message.content.startswith('!st6'):
         send_message=message.content.split(" ")
