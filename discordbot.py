@@ -10,14 +10,14 @@ client = discord.Client()
 @client.event
 async def on_ready():
     # 起動したらターミナルにログイン通知が表示される
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(name='!helpDDでヘルプを表示(1.40)'))
     print('ログインしました')
-    #await client.change_presence(status=discord.Status.online, activity=discord.Game(name='!helpDDでヘルプを表示'))
 
 # メッセージ受信時に動作する処理
 @client.event
 async def on_message(message):
     #条件に当てはまるメッセージかチェックし正しい場合は返す
-    #await client.change_presence(status=discord.Status.dnd, activity=discord.Game(name='!helpDDでヘルプを表示'))
+    await client.change_presence(status=discord.Status.offline)
     def check(msg):
         return msg.author == message.author
     
@@ -64,7 +64,6 @@ async def on_message(message):
                 m=m+txt
                 txt=""
             x=x+1
-        m=m+txt
         return m
 
     def Skill(ver,num,bp):
@@ -258,7 +257,7 @@ async def on_message(message):
     if message.content.startswith('!r'):
         send_message=message.content.split(" ")
         if len(send_message)==1:
-            number=int(random.random()*100)+1
+            number=int(random.random()*100)
             await message.channel.send(message.author.mention+str(number))
         else:
             txt=TDTM(send_message[1])
@@ -291,7 +290,7 @@ async def on_message(message):
         mes=message.author.mention+"```"+hf.read()+"```"
         await message.channel.send(mes)
 
-    #await client.change_presence(status=discord.Status.online, activity=discord.Game(name='!helpDDでヘルプを表示'))
+    await client.change_presence(status=discord.Status.online)
 
 
 
