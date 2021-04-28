@@ -18,7 +18,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
     #条件に当てはまるメッセージかチェックし正しい場合は返す
-    await client.change_presence(status=discord.Status.dnd, activity=discord.Game(name='!helpDDでヘルプを表示'))
+    
     def check(msg):
         return msg.author == message.author
     
@@ -255,7 +255,9 @@ async def on_message(message):
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
         return
-   
+    
+    await client.change_presence(status=discord.Status.dnd, activity=discord.Game(name='!helpDDでヘルプを表示'))
+
     if message.content.startswith('!r'):
         send_message=message.content.split(" ")
         if len(send_message)==1:
@@ -291,6 +293,43 @@ async def on_message(message):
         hf=open('help.txt', 'r', encoding='UTF-8')
         mes=message.author.mention+"```"+hf.read()+"```"
         await message.channel.send(mes)
+    
+    elif message.content.startswith('!to'):
+        RRR="\n"
+        send_message=message.content.split(" ")
+        channel = discord.utils.get(message.guild.text_channels, name=send_message[1])
+        if channel!=None:
+            option=[]
+            if len(send_message)>2:
+                option=send_message[2:len(send_message)+1]
+            
+            a="'['+copy_message.channel.name+']'+copy_message.author.display_name+RRR+copy_message.content"
+        
+            i=3
+            while len(option)>0:
+                if option[0]=="id":
+                    a=a+"+RRR+copy_message.jump_url"
+                else:
+                    await message.channel.send('「{0}」という名前のオプションが見つかりませんでした'.format(option[0]))
+                del option[0]
+                i=i+1
+            program_text=a
+                    
+            await message.channel.send('ここが送信元!(送信先:{0})'.format(send_message[1]))
+            await channel.send('送信先として設定(送信元:{0})'.format(message.channel.name))
+            copy_message=message
+            while copy_message.content != '!fin' or copy_message.channel!=message.channel:
+                copy_message=await client.wait_for("message",check=check)
+                if copy_message.channel==message.channel:
+                    i="⇒"
+                    i=eval(program_text)
+                    await channel.send(i)
+                    #"[{0}]{1}\n{2}\n{3}".format(copy_message.channel.name, copy_message.author.display_name, copy_message.content, copy_message.jump_url)
+            await message.channel.send('終了しました')
+            await channel.send('終了しました')
+        else:
+            await message.channel.send('「{0}」という名前のチャンネルが見つかりませんでした'.format(send_message[1]))
+
 
     await client.change_presence(status=discord.Status.online, activity=discord.Game(name='!helpDDでヘルプを表示'))
 
